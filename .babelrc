@@ -1,9 +1,12 @@
 {
-  "presets": [["@babel/preset-env",
-    {"modules": false}]],
-    "env": {
-      "test": {
-        "plugins": ["transform-es2015-modules-commonjs"]
-      }
-    }
+  "presets": [
+    ["@babel/env", {
+      "targets": {
+        "node": "current"
+      },
+      "corejs": "core-js@3",
+      "useBuiltIns": "entry"
+    }],
+    "@babel/react"
+  ]
 }

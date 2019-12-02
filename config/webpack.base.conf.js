@@ -17,7 +17,7 @@ module.exports = {
     paths: PATHS,
   },
   entry: {
-    app: ['babel-polyfill', PATHS.src],
+    app: ['@babel/polyfill', PATHS.src],
   },
   output: {
     filename: `${PATHS.assets}js/[name].js`,
@@ -25,59 +25,66 @@ module.exports = {
     publicPath: '/',
   },
   module: {
-    rules: [{
-      test: /\.js$/,
-      loader: ['babel-loader', 'eslint-loader'],
-      exclude: '/node_modules/',
-    }, {
-      test: /\.(jpe?g|png|gif|svg)$/,
-      loader: 'file-loader',
-      options: {
-        name: '[name].[ext]',
+    rules: [
+      {
+        test: /\.js$/,
+        loader: ['babel-loader', 'eslint-loader'],
+        exclude: '/node_modules/',
       },
-    },
-    {
-      test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
-      loader: 'file-loader',
-      options: {
-        name: '[name].[ext]',
-      },
-    }, {
-      test: /\.css$/,
-      use: [
-        'style-loader',
-        MiniCssExtractPlugin.loader,
-        {
-          loader: 'css-loader',
-          options: { sourceMap: true },
+      {
+        test: /\.(jpe?g|png|gif|svg)$/,
+        loader: 'file-loader',
+        options: {
+          name: '[name].[ext]',
         },
-      ],
-    }, {
-      test: /\.scss$/,
-      use: [
-        'style-loader',
-        MiniCssExtractPlugin.loader,
-        {
-          loader: 'css-loader',
-          options: {
-            sourceMap: true,
+      },
+      {
+        test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+        loader: 'file-loader',
+        options: {
+          name: '[name].[ext]',
+        },
+      },
+      {
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader',
+            options: { sourceMap: true },
           },
-        }, {
-          loader: 'postcss-loader',
-          options: {
-            sourceMap: true,
-            config: {
-              path: `${PATHS.src}/js/postcss.config.js`,
+        ],
+      },
+      {
+        test: /\.scss$/,
+        use: [
+          'style-loader',
+          MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true,
             },
           },
-        }, {
-          loader: 'sass-loader',
-          options: {
-            sourceMap: true,
+          {
+            loader: 'postcss-loader',
+            options: {
+              sourceMap: true,
+              config: {
+                path: `${PATHS.src}/js/postcss.config.js`,
+              },
+            },
           },
-        },
-      ],
-    }],
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: true,
+            },
+          },
+        ],
+      },
+    ],
   },
   plugins: [
     new CleanWebpackPlugin(),
@@ -89,15 +96,17 @@ module.exports = {
       template: `${PATHS.src}/index.html`,
       filename: './index.html',
     }),
-    new CopyWebpackPlugin([{
-      from: `${PATHS.src}/img`,
-      to: `${PATHS.assets}img`,
-    },
+    new CopyWebpackPlugin([
+      {
+        from: `${PATHS.src}/img`,
+        to: `${PATHS.assets}img`,
+      },
     ]),
-    new CopyWebpackPlugin([{
-      from: `${PATHS.src}/fonts`,
-      to: `${PATHS.assets}fonts`,
-    },
+    new CopyWebpackPlugin([
+      {
+        from: `${PATHS.src}/fonts`,
+        to: `${PATHS.assets}fonts`,
+      },
     ]),
     new ImageminPlugin({ test: /\.(jpe?g|png|gif|svg)$/i }),
   ],

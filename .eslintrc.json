@@ -5,7 +5,10 @@
         "jest": true
     },
     "extends": [
-        "airbnb-base"
+        "airbnb-base",
+        "plugin:prettier/recommended",
+        "plugin:jest/recommended",
+        "plugin:react/recommended"
     ],
     "globals": {
         "Atomics": "readonly",
@@ -15,9 +18,14 @@
         "ecmaVersion": 2018,
         "sourceType": "module"
     },
+    "plugins": [
+        "react",
+        "prettier",
+        "jest",
+        "babel"
+    ],
+    "parser": "babel-eslint",
     "rules": {
-        "global-require": 0,
-        "linebreak-style": 0,
-        "no-param-reassign": 0
+        "class-methods-use-this": "off"
     }
 }
