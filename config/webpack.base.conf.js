@@ -24,6 +24,7 @@ module.exports = {
     path: PATHS.dist,
     publicPath: '/',
   },
+  mode: 'base',
   module: {
     rules: [
       {
@@ -52,12 +53,42 @@ module.exports = {
           MiniCssExtractPlugin.loader,
           {
             loader: 'css-loader',
-            options: { sourceMap: true },
+            options: { sourceMap: true, modules: true },
           },
         ],
       },
       {
-        test: /\.scss$/,
+        test: /\.module\.s(a|c)ss$/,
+        use: [
+          this.mode === 'development' ? 'style-loader' : MiniCssExtractPlugin.loader,
+          // MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true,
+              modules: true,
+            },
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              sourceMap: true,
+              config: {
+                path: `${PATHS.src}/js/postcss.config.js`,
+              },
+            },
+          },
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: true,
+            },
+          },
+        ],
+      },
+      {
+        test: /\.s(a|c)ss$/,
+        exclude: /\.module.(s(a|c)ss)$/,
         use: [
           'style-loader',
           MiniCssExtractPlugin.loader,
@@ -85,6 +116,9 @@ module.exports = {
         ],
       },
     ],
+  },
+  resolve: {
+    extensions: ['.js', '.jsx', '.scss'],
   },
   plugins: [
     new CleanWebpackPlugin(),
