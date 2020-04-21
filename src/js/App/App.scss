@@ -1,5 +1,11 @@
 @import '../../scss/main.scss';
 
+body {
+    background-image: url("../../img/background.jpg");
+    background-size: cover;
+    background-attachment: fixed;
+}
+
 .main-app {
     display: flex;
     justify-content: space-around;
