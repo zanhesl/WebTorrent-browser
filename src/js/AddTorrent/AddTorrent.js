@@ -1,16 +1,15 @@
-import React, { useState, useEffect } from 'react';
-
-import WebTorrent from 'webtorrent';
+import React, { useState } from 'react';
 
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import dragDrop from 'drag-drop';
+// import dragDrop from 'drag-drop';
 
 import { connect } from 'react-redux';
 
 import './AddTorrent.scss';
 import { string, func } from 'prop-types';
-import { addInputFiles } from '../torrentHandler/torrentHandler';
+import { Paper } from '@material-ui/core';
+import { addInputFiles, getTorrentsInfo, getTorrent } from '../torrentHandler/torrentHandler';
 
 function AddTorrent(props) {
   const [link, setLink] = useState('');
@@ -24,44 +23,60 @@ function AddTorrent(props) {
   const handleSubmit = event => {
     event.preventDefault();
     addInputFiles(fileInput.current.files);
+    const data = getTorrentsInfo();
+    props.onNewTorrents(data);
   };
 
-  useEffect(() => {
-    const client = new WebTorrent();
+  const handleDownload = magnetLink => {
+    props.onNewDownload(magnetLink);
+    getTorrent(magnetLink);
+    const data = getTorrentsInfo();
+    console.log(data);
 
-    // When user drops files on the browser, create a new torrent and start seeding it!
-    dragDrop('body', files => {
-      client.seed(files, torrent => {
-        console.log('Client is seeding:', torrent.infoHash);
-      });
-    });
-  });
+    props.onNewTorrents(data);
+    setLink('');
+  };
+  // useEffect(() => {
+  //   const client = new WebTorrent();
+
+  //   // When user drops files on the browser, create a new torrent and start seeding it!
+  //   dragDrop('body', files => {
+  //     client.seed(files, torrent => {
+  //       console.log('Client is seeding:', torrent.infoHash);
+  //     });
+  //   });
+  // }, []);
 
   return (
-    <>
+    <Paper className="paper-container">
       <div className="add-torrent">
-        <form noValidate autoComplete="off">
+        <Button variant="contained" color="primary" onClick={() => handleDownload(link)}>
+          Download
+        </Button>
+        <form noValidate autoComplete="off" className="magnet-form">
           <TextField
             id="outlined-basic"
             label="Enter magnet URL:"
             variant="outlined"
             value={link}
             onChange={handleLinkChange}
+            className="magnet-input"
           />
         </form>
-        <Button variant="contained" color="primary" onClick={() => props.onNewDownload(link)}>
-          Download
-        </Button>
       </div>
-      <div className="drop-area"></div>
-      <Button variant="contained" component="label">
-        Choose File:
-        <input type="file" style={{ display: 'none' }} ref={fileInput} multiple />
-      </Button>
-      <Button variant="contained" color="primary" onClick={handleSubmit}>
-        Upload
-      </Button>
-    </>
+      <div className="input-files">
+        <div className="drop-area"></div>
+        <div className="input-files__choose-file">
+          <Button variant="contained" color="primary" component="label">
+            Choose File:
+            <input type="file" style={{ display: 'none' }} ref={fileInput} multiple />
+          </Button>
+          <Button variant="contained" color="primary" onClick={handleSubmit}>
+            Upload
+          </Button>
+        </div>
+      </div>
+    </Paper>
   );
 }
 
@@ -74,12 +89,14 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     onNewDownload: link => dispatch({ type: 'DOWNLOAD_MAGNET', payload: link }),
+    onNewTorrents: torrents => dispatch({ type: 'UPDATE_TORRENT', payload: torrents }),
   };
 }
 
 AddTorrent.propTypes = {
   currentMagnetLink: string,
   onNewDownload: func,
+  onNewTorrents: func,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddTorrent);

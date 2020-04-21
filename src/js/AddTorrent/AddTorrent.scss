@@ -2,10 +2,49 @@
 
 .add-torrent {
     display: flex;
+    margin-bottom: 20px;
+}
+
+.paper-container {
+    padding: 20px;
 }
 
 .drop-area {
     width: 100px;
     height: 100px;
     border: 2px dashed black;
+}
+
+.MuiButton-root {
+    background-color: $main-red !important;
+
+    &:hover {
+        color: $main-gray !important;
+    }
+}
+
+.MuiFormLabel-root.Mui-focused {
+    color: $main-gray !important;
+}
+
+.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-color: $main-gray !important;
+}
+
+.magnet-input {
+    width: 200px !important;
+}
+
+.magnet-form {
+    margin-left: 10px;
+}
+
+.input-files {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.input-files__choose-file {
+    margin-left: 10px;
 }

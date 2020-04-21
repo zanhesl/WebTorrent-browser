@@ -1,7 +1,7 @@
 const initialState = {
   currentMagnetLink: '',
   seeds: [],
-  downloads: [],
+  torrents: [],
 };
 
 export default function rootReducer(state = initialState, action) {
@@ -10,6 +10,11 @@ export default function rootReducer(state = initialState, action) {
       return {
         ...state,
         currentMagnetLink: action.payload,
+      };
+    case 'UPDATE_TORRENT':
+      return {
+        ...state,
+        torrents: action.payload,
       };
     default:
       return state;

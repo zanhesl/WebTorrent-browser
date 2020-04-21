@@ -4,7 +4,7 @@ import Idbkv from 'idb-kv-store';
 
 const parsetorrent = require('parse-torrent');
 
-const client = new Webtorrent();
+export const client = new Webtorrent();
 const torrents = new Idbkv('torrents');
 
 function addTorrent(files) {
@@ -18,16 +18,6 @@ function addTorrent(files) {
   torrent.on('done', () => {
     console.log(`[${torrent.infoHash}] Import into indexedDB done`);
     // Checks to make sure that ImmediateChunkStore has finished writing to store before destroying the torrent!
-    const isMemStoreEmpty = setInterval(() => {
-      // Since client.seed is sequential, this is okay here.
-      const empty = !torrent.store.mem[torrent.store.mem.length - 1];
-      if (empty) {
-        console.log(`[${torrent.infoHash}] Destroying torrent`);
-        // Destroys the torrent, removing it from the client!
-        torrent.destroy();
-        clearInterval(isMemStoreEmpty);
-      }
-    }, 500);
   });
 }
 
@@ -43,7 +33,7 @@ export function addInputFiles(files) {
 
 function resurrectTorrent(metadata) {
   if (typeof metadata === 'object' && metadata != null) {
-    if (client.get(metadata.infoHash)) return;
+    if (client.get(metadata.infoHash)) return; // check if torrent exists
     const torrent = client.add(metadata, { store: idb });
     torrent.on('metadata', () => {
       console.log(`[${metadata.infoHash}] Resurrecting torrent`);
@@ -65,5 +55,21 @@ export function resurrectAllTorrents() {
       }
       cursor.continue();
     }
+  });
+}
+
+export function getTorrentsInfo() {
+  return client.torrents;
+}
+
+export function getTorrent(torrentId) {
+  client.add(torrentId, { store: idb }, torrent => {
+    torrent.on('error', function(err) {
+      console.log(err);
+    });
+
+    torrent.on('done', () => {
+      console.log('torrent download finished');
+    });
   });
 }
