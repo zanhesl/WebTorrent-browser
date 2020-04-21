@@ -1,0 +1,11 @@
+@import '../../scss/main.scss';
+
+.add-torrent {
+    display: flex;
+}
+
+.drop-area {
+    width: 100px;
+    height: 100px;
+    border: 2px dashed black;
+}

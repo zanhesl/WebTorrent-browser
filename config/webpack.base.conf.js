@@ -137,4 +137,8 @@ module.exports = {
     ]),
     new ImageminPlugin({ test: /\.(jpe?g|png|gif|svg)$/i }),
   ],
+  target: 'web',
+  node: {
+    fs: 'empty',
+  },
 };
