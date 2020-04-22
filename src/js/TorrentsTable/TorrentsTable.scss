@@ -7,3 +7,13 @@
 .MuiTab-textColorPrimary.Mui-selected {
     color: $main-red !important;
 }
+
+.short-cell {
+    box-sizing: border-box;
+    width: 120px;
+}
+
+.long-cell {
+    box-sizing: border-box;
+    width: 200px;
+}

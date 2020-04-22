@@ -20,7 +20,7 @@ import prettyBytes from '../torrentHandler/prettyBytes';
 import './TorrentsTable.scss';
 
 const REFRESH_RATE = 1000;
-const RESTRICTED_LENGTH = 9;
+const RESTRICTED_LENGTH = 20;
 const PERCENT_MULTIPLIER = 100;
 
 function TorrentsTable(props) {
@@ -47,10 +47,16 @@ function TorrentsTable(props) {
         <Table className="main-table" stickyHeader>
           <TableHead>
             <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell align="center">Speed</TableCell>
-              <TableCell align="center">Peers</TableCell>
-              <TableCell align="center">Size</TableCell>
+              <TableCell className="long-cell">Name</TableCell>
+              <TableCell className="short-cell" align="center">
+                Speed
+              </TableCell>
+              <TableCell className="short-cell" align="center">
+                Peers
+              </TableCell>
+              <TableCell className="short-cell" align="center">
+                Size
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -58,7 +64,7 @@ function TorrentsTable(props) {
               .filter(element => element.done === props.downUpLoadSortFlag)
               .map((torrent, index) => (
                 <TableRow key={index}>
-                  <TableCell>
+                  <TableCell className="long-cell">
                     {torrent.name
                       ? `${torrent.name.slice(0, RESTRICTED_LENGTH - 1)}${
                           torrent.name.length > RESTRICTED_LENGTH ? '...' : ''
@@ -74,9 +80,13 @@ function TorrentsTable(props) {
                       />
                     )}
                   </TableCell>
-                  <TableCell align="center">{prettyBytes(torrent.uploadSpeed)}</TableCell>
-                  <TableCell align="center">{torrent.numPeers}</TableCell>
-                  <TableCell align="center">
+                  <TableCell className="short-cell" align="center">
+                    {props.downUpLoadSortFlag ? prettyBytes(torrent.uploadSpeed) : prettyBytes(torrent.downloadSpeed)}
+                  </TableCell>
+                  <TableCell className="short-cell" align="center">
+                    {torrent.numPeers}
+                  </TableCell>
+                  <TableCell className="short-cell" align="center">
                     {prettyBytes(torrent.length)}
                     <div className="icon-wrapper" onClick={() => destroyTorrent(torrent)}>
                       <DeleteOutlineIcon />

@@ -1,15 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
-// import dragDrop from 'drag-drop';
+import FolderOpenIcon from '@material-ui/icons/FolderOpen';
+
+import dragDrop from 'drag-drop';
 
 import { connect } from 'react-redux';
 
 import './AddTorrent.scss';
 import { func } from 'prop-types';
 import { Paper } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
 import { addInputFiles, getTorrent } from '../torrentHandler/torrentHandler';
 
 function AddTorrent(props) {
@@ -18,6 +21,14 @@ function AddTorrent(props) {
   const handleLinkChange = event => {
     setLink(event.target.value);
   };
+
+  useEffect(() => {
+    dragDrop('#drop-area', {
+      onDrop: files => {
+        addInputFiles(files);
+      },
+    });
+  }, []);
 
   const fileInput = React.createRef();
 
@@ -51,7 +62,10 @@ function AddTorrent(props) {
       </div>
       <Divider />
       <div className="input-files">
-        <div className="drop-area"></div>
+        <Paper className="drop-area" id="drop-area">
+          <FolderOpenIcon className="folder-icon" />
+          <Typography>Drop files here</Typography>
+        </Paper>
         <div className="input-files__choose-file">
           <Button variant="contained" className="select-files" color="primary" component="label">
             Choose File:
