@@ -8,7 +8,6 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-// import Button from '@material-ui/core/Button';
 
 import { connect } from 'react-redux';
 
@@ -18,29 +17,24 @@ import prettyBytes from '../torrentHandler/prettyBytes';
 import './TorrentsTable.scss';
 
 function TorrentsTable(props) {
-  // const [isClicked, setClick] = useState(false);
+  const [isTicked, setTick] = useState(false);
   // eslint-disable-next-line no-unused-vars
   const [torrentsArr, setTorrentsArr] = useState([]);
 
+  const interval = setInterval(() => {
+    setTick(!isTicked);
+    console.log('tick');
+    clearInterval(interval);
+  }, 1000);
+
   useEffect(() => {
     setTorrentsArr(props.torrents);
-    console.log('new', torrentsArr);
-  }, [props]);
-
-  // setInterval(() => {
-  //   // eslint-disable-next-line no-debugger
-  //   setTorrentsArr(props.torrents);
-  // }, 10);
+    // console.log('updated!');
+    // return () => Int(interval);
+  });
 
   return (
     <>
-      {/* <Button
-        onClick={() => {
-          setClick(!isClicked);
-        }}
-      >
-        Get1!
-      </Button> */}
       <TableContainer component={Paper}>
         <Table className="main-table" stickyHeader>
           <TableHead>

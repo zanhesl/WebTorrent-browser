@@ -12,11 +12,11 @@ import './App.scss';
 function App(props) {
   useEffect(() => {
     resurrectAllTorrents();
-    const interval = setInterval(() => {
-      const data = getTorrentsInfo();
-      props.onNewTorrents(data);
-    }, 1000);
-    return () => clearTimeout(interval);
+    // const interval = setInterval(() => {
+    const data = getTorrentsInfo();
+    props.onNewTorrents(data);
+    // }, 1000);
+    // return () => clearTimeout(interval);
   }, []);
   return (
     <div className="main-app">
