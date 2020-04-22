@@ -8,6 +8,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 import { connect } from 'react-redux';
 
@@ -16,6 +17,9 @@ import prettyBytes from '../torrentHandler/prettyBytes';
 
 import './TorrentsTable.scss';
 
+const REFRESH_RATE = 1000;
+const RESTRICTED_LENGTH = 9;
+
 function TorrentsTable(props) {
   const [isTicked, setTick] = useState(false);
   // eslint-disable-next-line no-unused-vars
@@ -23,14 +27,11 @@ function TorrentsTable(props) {
 
   const interval = setInterval(() => {
     setTick(!isTicked);
-    console.log('tick');
     clearInterval(interval);
-  }, 1000);
+  }, REFRESH_RATE);
 
   useEffect(() => {
     setTorrentsArr(props.torrents);
-    // console.log('updated!');
-    // return () => Int(interval);
   });
 
   return (
@@ -53,7 +54,9 @@ function TorrentsTable(props) {
               .filter(element => element.done)
               .map((torrent, index) => (
                 <TableRow key={index}>
-                  <TableCell>{`${torrent.name.slice(0, 8)}${torrent.name.length > 9 ? '...' : ''}`}</TableCell>
+                  <TableCell>{`${torrent.name.slice(0, RESTRICTED_LENGTH - 1)}${
+                    torrent.name.length > RESTRICTED_LENGTH ? '...' : ''
+                  }`}</TableCell>
                   <TableCell align="center">{prettyBytes(torrent.uploadSpeed)}</TableCell>
                   <TableCell align="center">{torrent.numPeers}</TableCell>
                   <TableCell align="center">{prettyBytes(torrent.length)}</TableCell>
@@ -80,7 +83,14 @@ function TorrentsTable(props) {
               })
               .map((torrent, index) => (
                 <TableRow key={index}>
-                  <TableCell>{torrent.name}</TableCell>
+                  <TableCell>
+                    {torrent.name}
+                    <LinearProgress
+                      variant="determinate"
+                      color="secondary"
+                      value={Math.round(torrent.progress * 100)}
+                    />
+                  </TableCell>
                   <TableCell align="center">{prettyBytes(torrent.downloadSpeed)}</TableCell>
                   <TableCell align="center">{torrent.numPeers}</TableCell>
                   <TableCell align="center">{prettyBytes(torrent.length)}</TableCell>

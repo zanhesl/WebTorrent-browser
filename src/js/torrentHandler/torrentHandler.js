@@ -64,6 +64,8 @@ export function getTorrentsInfo() {
 
 export function getTorrent(torrentId) {
   client.add(torrentId, { store: idb }, torrent => {
+    torrents.add(parsetorrent(torrent.torrentFile));
+
     torrent.on('error', function(err) {
       console.log(err);
     });
