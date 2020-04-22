@@ -69,6 +69,8 @@
   },
   "dependencies": {
     "@material-ui/core": "^4.9.11",
+    "@material-ui/icons": "^4.9.1",
+    "check-disk-space": "^2.1.0",
     "classnames": "^2.2.6",
     "core-js": "^3.4.5",
     "drag-drop": "^6.0.0",

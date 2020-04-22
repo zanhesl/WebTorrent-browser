@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
-import { array, func } from 'prop-types';
+import { func } from 'prop-types';
 
 import { connect } from 'react-redux';
 import AddTorrent from '../AddTorrent';
 import TorrentsTable from '../TorrentsTable';
+import MemoryCell from '../MemoryCell';
 
 import { getTorrentsInfo, resurrectAllTorrents } from '../torrentHandler/torrentHandler';
 
@@ -12,11 +13,8 @@ import './App.scss';
 function App(props) {
   useEffect(() => {
     resurrectAllTorrents();
-    // const interval = setInterval(() => {
     const data = getTorrentsInfo();
     props.onNewTorrents(data);
-    // }, 1000);
-    // return () => clearTimeout(interval);
   }, []);
   return (
     <div className="main-app">
@@ -24,6 +22,7 @@ function App(props) {
       <div className="main-app__content">
         <div className="add-torrent-wrapper">
           <AddTorrent />
+          <MemoryCell />
         </div>
         <TorrentsTable />
       </div>
@@ -31,10 +30,8 @@ function App(props) {
   );
 }
 
-function mapStateToProps(state) {
-  return {
-    torrents: state.torrents,
-  };
+function mapStateToProps() {
+  return {};
 }
 
 function mapDispatchToProps(dispatch) {
@@ -44,7 +41,6 @@ function mapDispatchToProps(dispatch) {
 }
 
 App.propTypes = {
-  torrents: array,
   onNewTorrents: func,
 };
 

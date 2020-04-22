@@ -2,11 +2,12 @@
 
 .add-torrent {
     display: flex;
-    margin-bottom: 20px;
+    justify-content: center;
+    margin-bottom: $main-spacing;
 }
 
 .paper-container {
-    padding: 20px;
+    padding: $main-spacing;
     width: 400px;
 }
 
@@ -44,8 +45,17 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
+    margin-top: $main-spacing;
 }
 
 .input-files__choose-file {
     margin-left: 10px;
+}
+
+.select-files {
+    background-color: $main-gray !important;
+
+    &:hover {
+        color: white !important;
+    }
 }

@@ -4,15 +4,17 @@ import Idbkv from 'idb-kv-store';
 
 const parsetorrent = require('parse-torrent');
 
-export const client = new Webtorrent();
+const client = new Webtorrent();
 const torrents = new Idbkv('torrents');
 
 function addTorrent(files) {
+  // const dataBase = new Idb();
   // Adds files to WebTorrent client, storing them in the indexedDB store.
   const torrent = client.seed(files, { store: idb });
   torrent.on('metadata', () => {
     // Once generated, stores the metadata for later use when re-adding the torrent!
-    torrents.add(parsetorrent(torrent.torrentFile));
+    const metaInfo = parsetorrent(torrent.torrentFile);
+    torrents.add(metaInfo.infoHash, metaInfo);
     console.log(`[${torrent.infoHash}] Seeding torrent`);
   });
   torrent.on('done', () => {
@@ -44,7 +46,6 @@ function resurrectTorrent(metadata) {
   }
 }
 
-// eslint-disable-next-line import/prefer-default-export
 export function resurrectAllTorrents() {
   // Itterates through all metadata from metadata store and attempts to resurrect them!
   torrents.iterator((err, cursor) => {
@@ -64,7 +65,9 @@ export function getTorrentsInfo() {
 
 export function getTorrent(torrentId) {
   client.add(torrentId, { store: idb }, torrent => {
-    torrents.add(parsetorrent(torrent.torrentFile));
+    const metaInfo = parsetorrent(torrent.torrentFile);
+
+    torrents.add(metaInfo.infoHash, metaInfo);
 
     torrent.on('error', function(err) {
       console.log(err);
@@ -75,3 +78,15 @@ export function getTorrent(torrentId) {
     });
   });
 }
+
+export function destroyTorrent(torrent) {
+  torrent.destroy();
+  torrents.remove(torrent.infoHash);
+  // idb.destroy(torrent.infoHash);
+}
+
+// export async function getFreeMemory(overAllMem) {
+//   return torrents.json().then(data => {
+//     return overAllMem - Object.values(data).reduce((sum, elem) => sum + elem.length, 0);
+//   });
+// }
