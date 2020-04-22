@@ -12,7 +12,8 @@ import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 
 import { connect } from 'react-redux';
 
-import { func, array, number } from 'prop-types';
+import { func, array, number, bool } from 'prop-types';
+import ListSwitch from '../ListSwitch';
 import { destroyTorrent } from '../torrentHandler/torrentHandler';
 import prettyBytes from '../torrentHandler/prettyBytes';
 
@@ -42,21 +43,19 @@ function TorrentsTable(props) {
   return (
     <>
       <TableContainer component={Paper}>
+        <ListSwitch />
         <Table className="main-table" stickyHeader>
           <TableHead>
             <TableRow>
-              <TableCell>Seeds</TableCell>
-            </TableRow>
-            <TableRow>
               <TableCell>Name</TableCell>
-              <TableCell align="center">Upload Speed</TableCell>
+              <TableCell align="center">Speed</TableCell>
               <TableCell align="center">Peers</TableCell>
               <TableCell align="center">Size</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {torrentsArr
-              .filter(element => element.done)
+              .filter(element => element.done === props.downUpLoadSortFlag)
               .map((torrent, index) => (
                 <TableRow key={index}>
                   <TableCell>
@@ -65,6 +64,15 @@ function TorrentsTable(props) {
                           torrent.name.length > RESTRICTED_LENGTH ? '...' : ''
                         }`
                       : ''}
+                    {props.downUpLoadSortFlag ? (
+                      <></>
+                    ) : (
+                      <LinearProgress
+                        variant="determinate"
+                        color="secondary"
+                        value={Math.round(torrent.progress * PERCENT_MULTIPLIER)}
+                      />
+                    )}
                   </TableCell>
                   <TableCell align="center">{prettyBytes(torrent.uploadSpeed)}</TableCell>
                   <TableCell align="center">{torrent.numPeers}</TableCell>
@@ -78,7 +86,7 @@ function TorrentsTable(props) {
               ))}
           </TableBody>
         </Table>
-        <Table className="main-table" stickyHeader>
+        {/* <Table className="main-table" stickyHeader>
           <TableHead>
             <TableRow>
               <TableCell>Downloads</TableCell>
@@ -120,7 +128,7 @@ function TorrentsTable(props) {
                 </TableRow>
               ))}
           </TableBody>
-        </Table>
+        </Table> */}
       </TableContainer>
     </>
   );
@@ -131,6 +139,7 @@ function mapStateToProps(state) {
     torrents: state.torrents,
     freeMemory: state.freeMemory,
     dedicatedMemory: state.dedicatedMemory,
+    downUpLoadSortFlag: state.downUpLoadSortFlag,
   };
 }
 
@@ -147,6 +156,7 @@ TorrentsTable.propTypes = {
   updateFreeMem: func,
   freeMemory: number,
   dedicatedMemory: number,
+  downUpLoadSortFlag: bool,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TorrentsTable);

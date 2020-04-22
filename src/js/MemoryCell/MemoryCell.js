@@ -8,6 +8,7 @@ import { Paper } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
 
 import prettyBytes from '../torrentHandler/prettyBytes';
 
@@ -30,12 +31,15 @@ function TorrentCell(props) {
   return (
     <div className="memory-container">
       <Paper className="memory-paper">
-        <CircularProgress
-          variant="static"
-          value={((props.freeMemory / props.dedicatedMemory) * 100).toFixed(0)}
-          color="secondary"
-        />
-        {`${prettyBytes(props.freeMemory)} / ${prettyBytes(props.dedicatedMemory)}`}
+        <div className="memory-progress-wrapper">
+          <CircularProgress
+            variant="static"
+            value={((props.freeMemory / props.dedicatedMemory) * 100).toFixed(0)}
+            color="secondary"
+            className="memory-progress__progress"
+          />
+          <Typography>{`${prettyBytes(props.freeMemory)} / ${prettyBytes(props.dedicatedMemory)}`}</Typography>
+        </div>
         <div className="change-memory">
           <Button variant="contained" color="primary" onClick={() => dedicateMemory(memory)}>
             Update

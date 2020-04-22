@@ -11,3 +11,14 @@
 .memory-paper {
     padding: $main-spacing;
 }
+
+.memory-progress-wrapper {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: $main-spacing;
+}
+
+.memory-progress__progress {
+    margin-right: $main-spacing/2;
+}

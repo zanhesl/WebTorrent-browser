@@ -1,9 +1,9 @@
 const initialState = {
   currentMagnetLink: '',
-  seeds: [],
   torrents: [],
   dedicatedMemory: +localStorage.getItem('memory'),
   freeMemory: 0,
+  downUpLoadSortFlag: true,
 };
 
 export default function rootReducer(state = initialState, action) {
@@ -27,6 +27,11 @@ export default function rootReducer(state = initialState, action) {
       return {
         ...state,
         freeMemory: state.dedicatedMemory - action.payload,
+      };
+    case 'CHANGE_FLAG':
+      return {
+        ...state,
+        downUpLoadSortFlag: action.payload,
       };
     default:
       return state;

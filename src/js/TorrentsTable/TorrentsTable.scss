@@ -1,4 +1,9 @@
 @import '../../scss/main.scss';
 
-.MuiSvgIcon-root {
+.MuiTabs-indicator {
+    background-color: $main-red !important;
+}
+
+.MuiTab-textColorPrimary.Mui-selected {
+    color: $main-red !important;
 }

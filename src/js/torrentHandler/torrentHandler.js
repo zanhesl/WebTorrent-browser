@@ -1,5 +1,5 @@
 import Webtorrent from 'webtorrent';
-import idb from 'indexeddb-chunk-store';
+import Idb from 'indexeddb-chunk-store';
 import Idbkv from 'idb-kv-store';
 
 const parsetorrent = require('parse-torrent');
@@ -10,7 +10,7 @@ const torrents = new Idbkv('torrents');
 function addTorrent(files) {
   // const dataBase = new Idb();
   // Adds files to WebTorrent client, storing them in the indexedDB store.
-  const torrent = client.seed(files, { store: idb });
+  const torrent = client.seed(files, { store: Idb });
   torrent.on('metadata', () => {
     // Once generated, stores the metadata for later use when re-adding the torrent!
     const metaInfo = parsetorrent(torrent.torrentFile);
@@ -36,7 +36,7 @@ export function addInputFiles(files) {
 function resurrectTorrent(metadata) {
   if (typeof metadata === 'object' && metadata != null) {
     if (client.get(metadata.infoHash)) return; // check if torrent exists
-    const torrent = client.add(metadata, { store: idb });
+    const torrent = client.add(metadata, { store: Idb });
     torrent.on('metadata', () => {
       console.log(`[${metadata.infoHash}] Resurrecting torrent`);
     });
@@ -64,7 +64,7 @@ export function getTorrentsInfo() {
 }
 
 export function getTorrent(torrentId) {
-  client.add(torrentId, { store: idb }, torrent => {
+  client.add(torrentId, { store: Idb }, torrent => {
     const metaInfo = parsetorrent(torrent.torrentFile);
 
     torrents.add(metaInfo.infoHash, metaInfo);
@@ -82,7 +82,7 @@ export function getTorrent(torrentId) {
 export function destroyTorrent(torrent) {
   torrent.destroy();
   torrents.remove(torrent.infoHash);
-  // idb.destroy(torrent.infoHash);
+  indexedDB.deleteDatabase(torrent.infoHash);
 }
 
 // export async function getFreeMemory(overAllMem) {
