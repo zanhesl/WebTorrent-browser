@@ -7,15 +7,25 @@ const parsetorrent = require('parse-torrent');
 const client = new Webtorrent();
 const torrents = new Idbkv('torrents');
 
-function addTorrent(files) {
-  // const dataBase = new Idb();
+export function destroyTorrent(torrent) {
+  torrent.destroy();
+  torrents.remove(torrent.infoHash);
+  indexedDB.deleteDatabase(torrent.infoHash);
+}
+
+function addTorrent(files, memory) {
   // Adds files to WebTorrent client, storing them in the indexedDB store.
   const torrent = client.seed(files, { store: Idb });
   torrent.on('metadata', () => {
     // Once generated, stores the metadata for later use when re-adding the torrent!
     const metaInfo = parsetorrent(torrent.torrentFile);
-    torrents.add(metaInfo.infoHash, metaInfo);
-    console.log(`[${torrent.infoHash}] Seeding torrent`);
+    if (metaInfo.length >= memory) {
+      console.log('Not enough memory!');
+      destroyTorrent(torrent);
+    } else {
+      torrents.add(metaInfo.infoHash, metaInfo);
+      console.log(`[${torrent.infoHash}] Seeding torrent`);
+    }
   });
   torrent.on('done', () => {
     console.log(`[${torrent.infoHash}] Import into indexedDB done`);
@@ -24,13 +34,13 @@ function addTorrent(files) {
 }
 
 // eslint-disable-next-line import/prefer-default-export
-export function addInputFiles(files) {
+export function addInputFiles(files, freeMemory) {
   if (files.length <= 0) {
     return;
   }
   // Splits the FileList into an array of files.
   const input = Array.prototype.slice.call(files);
-  addTorrent(input);
+  addTorrent(input, freeMemory);
 }
 
 function resurrectTorrent(metadata) {
@@ -63,12 +73,16 @@ export function getTorrentsInfo() {
   return client.torrents;
 }
 
-export function getTorrent(torrentId) {
+export function getTorrent(torrentId, freeMemory) {
   client.add(torrentId, { store: Idb }, torrent => {
     const metaInfo = parsetorrent(torrent.torrentFile);
 
-    torrents.add(metaInfo.infoHash, metaInfo);
-
+    if (metaInfo.length >= freeMemory) {
+      console.log('Not enough memory!');
+      destroyTorrent(torrent);
+    } else {
+      torrents.add(metaInfo.infoHash, metaInfo);
+    }
     torrent.on('error', function(err) {
       console.log(err);
     });
@@ -77,12 +91,6 @@ export function getTorrent(torrentId) {
       console.log('torrent download finished');
     });
   });
-}
-
-export function destroyTorrent(torrent) {
-  torrent.destroy();
-  torrents.remove(torrent.infoHash);
-  indexedDB.deleteDatabase(torrent.infoHash);
 }
 
 // export async function getFreeMemory(overAllMem) {

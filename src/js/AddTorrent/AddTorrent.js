@@ -10,7 +10,7 @@ import dragDrop from 'drag-drop';
 import { connect } from 'react-redux';
 
 import './AddTorrent.scss';
-import { func } from 'prop-types';
+import { func, number } from 'prop-types';
 import { Paper } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import { addInputFiles, getTorrent } from '../torrentHandler/torrentHandler';
@@ -34,12 +34,12 @@ function AddTorrent(props) {
 
   const handleSubmit = event => {
     event.preventDefault();
-    addInputFiles(fileInput.current.files);
+    addInputFiles(fileInput.current.files, props.freeMemory);
   };
 
   const handleDownload = magnetLink => {
     props.onNewDownload(magnetLink);
-    getTorrent(magnetLink);
+    getTorrent(magnetLink, props.freeMemory);
     setLink('');
   };
 
@@ -80,8 +80,10 @@ function AddTorrent(props) {
   );
 }
 
-function mapStateToProps() {
-  return {};
+function mapStateToProps(state) {
+  return {
+    freeMemory: state.freeMemory,
+  };
 }
 
 function mapDispatchToProps(dispatch) {
@@ -92,6 +94,7 @@ function mapDispatchToProps(dispatch) {
 
 AddTorrent.propTypes = {
   onNewDownload: func,
+  freeMemory: number,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddTorrent);

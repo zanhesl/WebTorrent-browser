@@ -26,7 +26,7 @@ export default function rootReducer(state = initialState, action) {
     case 'CALCULATE_FREE_MEMORY':
       return {
         ...state,
-        freeMemory: state.dedicatedMemory - action.payload,
+        freeMemory: state.dedicatedMemory - action.payload > 0 ? state.dedicatedMemory - action.payload : 0,
       };
     case 'CHANGE_FLAG':
       return {

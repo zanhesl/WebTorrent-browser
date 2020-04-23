@@ -34,7 +34,7 @@ function TorrentCell(props) {
         <div className="memory-progress-wrapper">
           <CircularProgress
             variant="static"
-            value={((props.freeMemory / props.dedicatedMemory) * 100).toFixed(0)}
+            value={props.freeMemory.isNan ? '...' : ((props.freeMemory / props.dedicatedMemory) * 100).toFixed(0)}
             color="secondary"
             className="memory-progress__progress"
           />

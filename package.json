@@ -1,7 +1,7 @@
 {
-  "name": "webpack-template",
+  "name": "webtorrent-template",
   "version": "1.0.0",
-  "description": "My webpack template",
+  "description": "First version of webtorrent app",
   "main": "index.js",
   "scripts": {
     "dev": "webpack-dev-server --open --config ./config/webpack.dev.conf.js",
