@@ -9,6 +9,8 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 
 import prettyBytes from '../torrentHandler/prettyBytes';
 
@@ -18,18 +20,35 @@ const MEGA_MULTIPLIER = 1000 ** 2;
 
 function TorrentCell(props) {
   const [memory, setMemory] = useState(+prettyBytes(props.dedicatedMemory).split(' ')[0]);
+  const [open, setOpen] = useState(false);
 
   const handleMemoryChange = event => {
     setMemory(event.target.value);
   };
 
   const dedicateMemory = memoryStorage => {
+    if (+memoryStorage * MEGA_MULTIPLIER <= props.dedicatedMemory - props.freeMemory) {
+      setOpen(true);
+      return;
+    }
     localStorage.setItem('memory', memoryStorage * MEGA_MULTIPLIER);
     props.onChangeMemory(+memoryStorage * MEGA_MULTIPLIER);
   };
 
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+  };
+
   return (
     <div className="memory-container">
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <MuiAlert elevation={6} variant="filled" onClose={handleClose} severity="error">
+          Delete torrents first, you have more storage occupied, than entered!
+        </MuiAlert>
+      </Snackbar>
       <Paper className="memory-paper">
         <div className="memory-progress-wrapper">
           <CircularProgress

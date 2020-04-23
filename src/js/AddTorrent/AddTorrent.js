@@ -4,6 +4,8 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import FolderOpenIcon from '@material-ui/icons/FolderOpen';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 
 import dragDrop from 'drag-drop';
 
@@ -17,6 +19,7 @@ import { addInputFiles, getTorrent } from '../torrentHandler/torrentHandler';
 
 function AddTorrent(props) {
   const [link, setLink] = useState('');
+  const [open, setOpen] = useState(false);
 
   const handleLinkChange = event => {
     setLink(event.target.value);
@@ -43,8 +46,20 @@ function AddTorrent(props) {
     setLink('');
   };
 
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+  };
+
   return (
     <Paper className="paper-container">
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <MuiAlert elevation={6} variant="filled" onClose={handleClose} severity="error">
+          Not enough memory, please add more!
+        </MuiAlert>
+      </Snackbar>
       <div className="add-torrent">
         <Button variant="contained" color="primary" onClick={() => handleDownload(link)}>
           Download
