@@ -64,7 +64,7 @@ function AddTorrent(props) {
         <Button variant="contained" color="primary" onClick={() => handleDownload(link)}>
           Download
         </Button>
-        <form noValidate autoComplete="off" className="magnet-form">
+        <form noValidate autoComplete="off" className="magnet-form" onSubmit={evt => evt.preventDefault()}>
           <TextField
             id="outlined-basic"
             label="Enter magnet URL:"
