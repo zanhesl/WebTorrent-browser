@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const merge = require('webpack-merge');
+const { spawn } = require('child_process');
 const baseWebpackConfig = require('./webpack.base.conf');
 
 const devWebpackConfig = merge(baseWebpackConfig, {
@@ -12,6 +13,11 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     overlay: {
       warnings: false,
       errors: true,
+    },
+    before() {
+      spawn('electron', ['.'], { shell: true, env: process.env, stdio: 'inherit' })
+        .on('close', () => process.exit(0))
+        .on('error', spawnError => console.error(spawnError));
     },
   },
   plugins: [

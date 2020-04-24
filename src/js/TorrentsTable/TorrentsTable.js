@@ -20,7 +20,7 @@ import prettyBytes from '../torrentHandler/prettyBytes';
 import './TorrentsTable.scss';
 
 const REFRESH_RATE = 1000;
-const RESTRICTED_LENGTH = 20;
+// const RESTRICTED_LENGTH = 20;
 const PERCENT_MULTIPLIER = 100;
 
 function TorrentsTable(props) {
@@ -65,11 +65,7 @@ function TorrentsTable(props) {
               .map((torrent, index) => (
                 <TableRow key={index}>
                   <TableCell className="long-cell">
-                    {torrent.name
-                      ? `${torrent.name.slice(0, RESTRICTED_LENGTH - 1)}${
-                          torrent.name.length > RESTRICTED_LENGTH ? '...' : ''
-                        }`
-                      : ''}
+                    {torrent.name ? torrent.name : ''}
                     {props.downUpLoadSortFlag ? (
                       <></>
                     ) : (

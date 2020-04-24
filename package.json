@@ -2,12 +2,13 @@
   "name": "webtorrent-template",
   "version": "1.0.0",
   "description": "First version of webtorrent app",
-  "main": "index.js",
+  "main": "src/electron.js",
   "scripts": {
-    "dev": "webpack-dev-server --open --config ./config/webpack.dev.conf.js",
-    "build": "webpack --config ./config/webpack.build.conf.js",
+    "dev": "webpack-dev-server --open --config ./config/webpack.dev.conf.js && electron ./src",
+    "build": "webpack --config ./config/webpack.build.conf.js && electron --noDevServer ./src",
     "lint": "eslint ./src",
-    "test": "jest"
+    "test": "jest",
+    "electron": "webpack-dev-server --open --config ./config/webpack.dev.conf.js && electron ./src"
   },
   "browser": {
     "./lib/server.js": false,
@@ -41,6 +42,8 @@
     "css-loader": "^2.1.0",
     "css-mqpacker": "^7.0.0",
     "cssnano": "^4.1.10",
+    "electron": "^8.2.3",
+    "electron-packager": "^14.2.1",
     "eslint": "^6.7.2",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-config-prettier": "^6.7.0",
@@ -74,8 +77,12 @@
     "@material-ui/styles": "^4.9.10",
     "check-disk-space": "^2.1.0",
     "classnames": "^2.2.6",
+    "concurrently": "^5.1.0",
     "core-js": "^3.4.5",
     "drag-drop": "^6.0.0",
+    "electron-builder": "^22.5.1",
+    "electron-devtools-installer": "^3.0.0",
+    "electron-is-dev": "^1.2.0",
     "idb-chunk-store": "^0.2.0",
     "idb-kv-store": "^4.4.0",
     "indexeddb-chunk-store": "^2.2.1",
@@ -89,6 +96,7 @@
     "redux": "^4.0.4",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
+    "wait-on": "^4.0.2",
     "webtorrent": "^0.108.1"
   }
 }
