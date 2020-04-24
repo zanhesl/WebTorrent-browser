@@ -34,8 +34,8 @@ if (process.platform === 'win32') {
 function createWindow() {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 1024, // width of the window
-    height: 768, // height of the window
+    width: 1920, // width of the window
+    height: 1080, // height of the window
     show: false, // don't show until window is ready
     webPreferences: {
       nodeIntegration: true,
