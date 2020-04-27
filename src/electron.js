@@ -4,26 +4,27 @@
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
 const url = require('url');
-
-// Add React extension for development
 const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-devtools-installer');
+const { getTorrent } = require('./main/dispatcher');
+// Add React extension for development
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 
 // Keep a reference for dev mode
-const dev = true;
+let dev = false;
 
 // Determine the mode (dev or production)
-// if (
-//   process.defaultApp ||
-//   /[\\/]electron-prebuilt[\\/]/.test(process.execPath) ||
-//   /[\\/]electron[\\/]/.test(process.execPath)
-// ) {
-//   dev = true;
-// }
+if (
+  process.defaultApp ||
+  /[\\/]electron-prebuilt[\\/]/.test(process.execPath) ||
+  /[\\/]electron[\\/]/.test(process.execPath)
+) {
+  dev = true;
+}
 
+getTorrent();
 // Temporary fix for broken high-dpi scale factor on Windows (125% scaling)
 // info: https://github.com/electron/electron/issues/9691
 if (process.platform === 'win32') {

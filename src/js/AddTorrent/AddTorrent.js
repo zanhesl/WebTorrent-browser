@@ -17,6 +17,8 @@ import { Paper } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import { addInputFiles, getTorrent } from '../torrentHandler/torrentHandler';
 
+// const { ipcRenderer } = window.require('electron');
+
 function AddTorrent(props) {
   const [link, setLink] = useState('');
   const [open, setOpen] = useState(false);
@@ -42,6 +44,7 @@ function AddTorrent(props) {
 
   const handleDownload = magnetLink => {
     props.onNewDownload(magnetLink);
+    // ipcRenderer.send('add-torrent');
     getTorrent(magnetLink, props.freeMemory);
     setLink('');
   };

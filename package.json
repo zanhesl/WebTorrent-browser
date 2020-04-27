@@ -8,7 +8,7 @@
     "build": "webpack --config ./config/webpack.build.conf.js && electron --noDevServer ./src",
     "lint": "eslint ./src",
     "test": "jest",
-    "electron": "webpack-dev-server --open --config ./config/webpack.dev.conf.js && electron ./src"
+    "electron": "webpack-dev-server --config ./config/webpack.dev.conf.js && electron ./src"
   },
   "browser": {
     "./lib/server.js": false,

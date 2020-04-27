@@ -110,7 +110,7 @@ module.exports = {
       },
     ],
   },
-  target: 'electron-renderer',
+  target: 'electron-main',
   resolve: {
     extensions: ['.js', '.jsx', '.scss'],
   },

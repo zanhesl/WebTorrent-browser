@@ -6,6 +6,7 @@ const parsetorrent = require('parse-torrent');
 
 const client = new Webtorrent();
 const torrents = new Idbkv('torrents');
+const { ipcRenderer } = window.require('electron');
 
 export function destroyTorrent(torrent) {
   torrent.destroy();
@@ -16,7 +17,6 @@ export function destroyTorrent(torrent) {
 async function addTorrent(files, memory) {
   // Adds files to WebTorrent client, storing them in the indexedDB store.
   const torrent = client.seed(files, { store: Idb });
-
   const info = torrent.on('metadata', () => {
     // Once generated, stores the metadata for later use when re-adding the torrent!
     const metaInfo = parsetorrent(torrent.torrentFile);
@@ -77,23 +77,24 @@ export function getTorrentsInfo() {
   return client.torrents;
 }
 
-export function getTorrent(torrentId, freeMemory) {
-  return client.add(torrentId, { store: Idb }, torrent => {
-    const metaInfo = parsetorrent(torrent.torrentFile);
+export function getTorrent(torrentId, freememory) {
+  ipcRenderer.send('add-torrent', torrentId, freememory);
+  // return client.add(torrentId, { store: Idb }, torrent => {
+  //   const metaInfo = parsetorrent(torrent.torrentFile);
 
-    if (metaInfo.length >= freeMemory) {
-      console.log('Not enough memory!');
-      destroyTorrent(torrent);
-      return true;
-    }
-    torrents.add(metaInfo.infoHash, metaInfo);
-    torrent.on('error', function(err) {
-      console.log(err);
-    });
+  //   if (metaInfo.length >= freeMemory) {
+  //     console.log('Not enough memory!');
+  //     destroyTorrent(torrent);
+  //     return true;
+  //   }
+  //   torrents.add(metaInfo.infoHash, metaInfo);
+  //   torrent.on('error', function(err) {
+  //     console.log(err);
+  //   });
 
-    torrent.on('done', () => {
-      console.log('torrent download finished');
-    });
-    return false;
-  });
+  //   torrent.on('done', () => {
+  //     console.log('torrent download finished');
+  //   });
+  //   return false;
+  // });
 }
