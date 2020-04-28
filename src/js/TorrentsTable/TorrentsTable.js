@@ -34,14 +34,18 @@ function TorrentsTable(props) {
       ipcRenderer.send('get-info');
       ipcRenderer.once('get-info', (evt, arg) => {
         setTorrentsArr([...arg, ...getTorrentsList()]);
-
-        const currentMemory = arg
-          .filter(el => el.path.indexOf('tmp') === -1)
-          .reduce((sum, elem) => sum + elem.length, 0);
-        props.updateFreeMem(currentMemory);
       });
     }, REFRESH_RATE);
   }, []);
+
+  useEffect(() => {
+    const currentMemory = torrentsArr
+      .filter(el => el.path.indexOf('tmp') === -1)
+      .reduce((sum, elem) => sum + elem.length, 0);
+    if (props.dedicatedMemory - props.freeMemory !== currentMemory) {
+      props.updateFreeMem(currentMemory);
+    }
+  });
 
   return (
     <>
