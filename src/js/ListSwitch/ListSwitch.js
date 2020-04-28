@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { func, bool } from 'prop-types';
+import { func, bool, number } from 'prop-types';
 
 // import { createMuiTheme } from '@material-ui/core/styles';
 // import { ThemeProvider } from '@material-ui/styles';
@@ -43,8 +43,8 @@ class ListSwitch extends Component {
             variant="fullWidth"
             aria-label="action tabs example"
           >
-            <Tab label="Uploads" {...this.a11yProps(0)} />
-            <Tab label="Downloads" {...this.a11yProps(1)} />
+            <Tab label={`Uploads(${this.props.uploads})`} {...this.a11yProps(0)} />
+            <Tab label={`Downloads(${this.props.downloads})`} {...this.a11yProps(1)} />
           </Tabs>
         </AppBar>
       </>
@@ -67,6 +67,8 @@ function mapDispatchToProps(dispatch) {
 ListSwitch.propTypes = {
   onChangeList: func,
   downUpLoadSortFlag: bool,
+  downloads: number,
+  uploads: number,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ListSwitch);

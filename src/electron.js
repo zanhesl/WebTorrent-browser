@@ -5,7 +5,7 @@ const { app, BrowserWindow } = require('electron');
 const path = require('path');
 const url = require('url');
 const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-devtools-installer');
-const { getTorrent } = require('./main/dispatcher');
+const { initTorrents } = require('./main/dispatcher');
 // Add React extension for development
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -24,7 +24,7 @@ if (
   dev = true;
 }
 
-getTorrent();
+initTorrents();
 // Temporary fix for broken high-dpi scale factor on Windows (125% scaling)
 // info: https://github.com/electron/electron/issues/9691
 if (process.platform === 'win32') {

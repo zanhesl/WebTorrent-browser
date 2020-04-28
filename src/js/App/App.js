@@ -1,20 +1,17 @@
 import React, { useEffect } from 'react';
-import { func } from 'prop-types';
 
 import { connect } from 'react-redux';
 import AddTorrent from '../AddTorrent';
 import TorrentsTable from '../TorrentsTable';
 import MemoryCell from '../MemoryCell';
 
-import { getTorrentsInfo, resurrectAllTorrents } from '../torrentHandler/torrentHandler';
+import { resurrectAllTorrents } from '../torrentHandler/torrentHandler';
 
 import './App.scss';
 
-function App(props) {
+function App() {
   useEffect(() => {
     resurrectAllTorrents();
-    const data = getTorrentsInfo();
-    props.onNewTorrents(data);
   }, []);
   return (
     <div className="main-app">
@@ -34,14 +31,10 @@ function mapStateToProps() {
   return {};
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    onNewTorrents: torrents => dispatch({ type: 'UPDATE_TORRENT', payload: torrents }),
-  };
+function mapDispatchToProps() {
+  return {};
 }
 
-App.propTypes = {
-  onNewTorrents: func,
-};
+App.propTypes = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
