@@ -10,10 +10,15 @@
 
 .short-cell {
     box-sizing: border-box;
-    width: 120px;
+    width: 100px;
 }
 
 .long-cell {
     box-sizing: border-box;
     width: 200px;
+}
+
+.magnet-cell {
+    box-sizing: border-box;
+    width: 60px;
 }

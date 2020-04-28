@@ -15,13 +15,15 @@ import './AddTorrent.scss';
 import { func, number } from 'prop-types';
 import { Paper } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
-import { addInputFiles, getTorrent } from '../torrentHandler/torrentHandler';
+import { seedTorrent, getTorrent } from '../torrentHandler/torrentHandler';
 
-// const { ipcRenderer } = window.require('electron');
+const { ipcRenderer } = window.require('electron');
 
 function AddTorrent(props) {
   const [link, setLink] = useState('');
   const [open, setOpen] = useState(false);
+  const [error, setError] = useState('');
+  const [errorType, setErrorType] = useState('error');
 
   const handleLinkChange = event => {
     setLink(event.target.value);
@@ -30,21 +32,24 @@ function AddTorrent(props) {
   useEffect(() => {
     dragDrop('#drop-area', {
       onDrop: files => {
-        addInputFiles(files);
+        console.log(files);
       },
+    });
+    ipcRenderer.on('error-message', (evt, arg) => {
+      const [errText, errType] = arg;
+      setErrorType(errType);
+      setError(errText);
+      setOpen(true);
     });
   }, []);
 
-  const fileInput = React.createRef();
-
   const handleSubmit = event => {
     event.preventDefault();
-    addInputFiles(fileInput.current.files, props.freeMemory);
+    seedTorrent(props.freeMemory);
   };
 
   const handleDownload = magnetLink => {
     props.onNewDownload(magnetLink);
-    // ipcRenderer.send('add-torrent');
     getTorrent(magnetLink, props.freeMemory);
     setLink('');
   };
@@ -59,8 +64,8 @@ function AddTorrent(props) {
   return (
     <Paper className="paper-container">
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-        <MuiAlert elevation={6} variant="filled" onClose={handleClose} severity="error">
-          Not enough memory, please add more!
+        <MuiAlert elevation={6} variant="filled" onClose={handleClose} severity={errorType}>
+          Error:{error}
         </MuiAlert>
       </Snackbar>
       <div className="add-torrent">
@@ -85,12 +90,8 @@ function AddTorrent(props) {
           <Typography>Drop files here</Typography>
         </Paper>
         <div className="input-files__choose-file">
-          <Button variant="contained" className="select-files" color="primary" component="label">
+          <Button variant="contained" className="select-files" color="primary" component="label" onClick={handleSubmit}>
             Choose File:
-            <input type="file" style={{ display: 'none' }} ref={fileInput} />
-          </Button>
-          <Button variant="contained" color="primary" onClick={handleSubmit}>
-            Upload
           </Button>
         </div>
       </div>

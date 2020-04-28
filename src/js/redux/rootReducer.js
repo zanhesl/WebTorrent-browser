@@ -1,8 +1,8 @@
-const DEFAULT_MOMRY = 256000000;
+const DEFAULT_MEMOMRY = 256000000;
 const initialState = {
   currentMagnetLink: '',
   torrents: [],
-  dedicatedMemory: +localStorage.getItem('memory') > 0 ? localStorage.getItem('memory') : DEFAULT_MOMRY,
+  dedicatedMemory: +localStorage.getItem('memory') > 0 ? +localStorage.getItem('memory') : DEFAULT_MEMOMRY,
   freeMemory: 0,
   downUpLoadSortFlag: true,
 };

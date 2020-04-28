@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { connect } from 'react-redux';
 
-import { func, number } from 'prop-types';
+import { func, number, array } from 'prop-types';
 
 import { Paper } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -16,11 +16,26 @@ import prettyBytes from '../torrentHandler/prettyBytes';
 
 import './MemoryCell.scss';
 
+// const { ipcRenderer } = window.require('electron');
+
 const MEGA_MULTIPLIER = 1000 ** 2;
 
 function TorrentCell(props) {
   const [memory, setMemory] = useState(+prettyBytes(props.dedicatedMemory).split(' ')[0]);
   const [open, setOpen] = useState(false);
+
+  // const calculateFree = () => {
+  //   const currentMemory = props.torrents.filter(el => el.path).reduce((sum, elem) => sum + elem.length, 0);
+  //   props.updateFreeMem(currentMemory);
+  // };
+
+  // useEffect(() => {
+  //   ipcRenderer.on('calculate-memory', () => {
+  //     console.log('changed!');
+
+  //     calculateFree();
+  //   });
+  // }, []);
 
   const handleMemoryChange = event => {
     setMemory(event.target.value);
@@ -33,6 +48,7 @@ function TorrentCell(props) {
     }
     localStorage.setItem('memory', memoryStorage * MEGA_MULTIPLIER);
     props.onChangeMemory(+memoryStorage * MEGA_MULTIPLIER);
+    // calculateFree();
   };
 
   const handleClose = (event, reason) => {
@@ -83,12 +99,14 @@ function mapStateToProps(state) {
   return {
     dedicatedMemory: state.dedicatedMemory,
     freeMemory: state.freeMemory,
+    torrents: state.torrents,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     onChangeMemory: mem => dispatch({ type: 'UPDATE_MEMORY', payload: mem }),
+    updateFreeMem: mem => dispatch({ type: 'CALCULATE_FREE_MEMORY', payload: mem }),
   };
 }
 
@@ -96,6 +114,8 @@ TorrentCell.propTypes = {
   onChangeMemory: func,
   dedicatedMemory: number,
   freeMemory: number,
+  updateFreeMem: func,
+  torrents: array,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TorrentCell);
