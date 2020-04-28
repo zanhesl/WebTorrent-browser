@@ -9,9 +9,13 @@ const torrents = new Idbkv('torrents');
 const { ipcRenderer } = window.require('electron');
 
 export function destroyTorrent(infoHash) {
-  ipcRenderer.send('destroy-torrent', infoHash);
-  torrents.remove(infoHash);
-  indexedDB.deleteDatabase(infoHash);
+  try {
+    client.remove(infoHash);
+  } catch {
+    ipcRenderer.send('destroy-torrent', infoHash);
+    torrents.remove(infoHash);
+    indexedDB.deleteDatabase(infoHash);
+  }
 }
 
 export function seedTorrent(freeMemory) {
@@ -51,4 +55,23 @@ export function getTorrent(torrentId, freememory) {
     metaInfo.filePath = filePath;
     torrents.add(metaInfo.infoHash, metaInfo);
   });
+  ipcRenderer.once('add-into-ram', (evt, torrentLink) => {
+    client.add(torrentLink);
+  });
+}
+
+export function getTorrentsList() {
+  const arr = client.torrents.map(el => ({
+    name: el.name,
+    downloadSpeed: el.downloadSpeed,
+    done: el.done,
+    uploadSpeed: el.uploadSpeed,
+    progress: el.progress,
+    numPeers: el.numPeers,
+    length: el.length,
+    infoHash: el.infoHash,
+    path: el.path,
+    magnet: el.magnetURI,
+  }));
+  return arr;
 }

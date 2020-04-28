@@ -25,12 +25,15 @@ module.exports = {
             const metaInfo = parsetorrent(torrent.torrentFile);
 
             if (metaInfo.length >= freeMemory) {
+              // if disk space is lacking, torrent downloads into RAM
               torrent.destroy();
-              event.reply('error-message', ['not enough free memory', 'warning']);
+              event.reply('error-message', [' not enough free memory, using RAM instead', 'warning']);
+              event.reply('add-into-ram', torrentLink);
             } else {
               event.reply('add-torrent', [metaInfo, fileName.filePaths[0]]);
               event.reply('calculate-memory');
             }
+
             torrent.on('error', function(err) {
               console.log(err);
             });
@@ -97,7 +100,7 @@ module.exports = {
         .then(fileName => {
           if (fileName.filePaths[0] === undefined) {
             console.log('Not seeding');
-            event.reply('error-message', ['not saved, because no folder selected', 'error']);
+            event.reply('error-message', ['not saved, because no folder selected', 'warning']);
             return;
           }
           if (fs.statSync(fileName.filePaths[0]).size >= freeMemory) {

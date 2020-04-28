@@ -15,7 +15,7 @@ import { connect } from 'react-redux';
 
 import { func, array, number, bool } from 'prop-types';
 import ListSwitch from '../ListSwitch';
-import { destroyTorrent } from '../torrentHandler/torrentHandler';
+import { destroyTorrent, getTorrentsList } from '../torrentHandler/torrentHandler';
 import prettyBytes from '../torrentHandler/prettyBytes';
 
 import './TorrentsTable.scss';
@@ -33,7 +33,8 @@ function TorrentsTable(props) {
     setInterval(() => {
       ipcRenderer.send('get-info');
       ipcRenderer.once('get-info', (evt, arg) => {
-        setTorrentsArr(arg);
+        setTorrentsArr([...arg, ...getTorrentsList()]);
+
         const currentMemory = arg
           .filter(el => el.path.indexOf('tmp') === -1)
           .reduce((sum, elem) => sum + elem.length, 0);

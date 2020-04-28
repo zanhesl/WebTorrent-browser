@@ -16,8 +16,6 @@ import prettyBytes from '../torrentHandler/prettyBytes';
 
 import './MemoryCell.scss';
 
-// const { ipcRenderer } = window.require('electron');
-
 const MEGA_MULTIPLIER = 1000 ** 2;
 
 function TorrentCell(props) {
