@@ -6,10 +6,6 @@ Pre-alpha build.
 
 `npm install` - to install dev dependencies
 
-`npm run dev` - to run in dev mode
-
-`npm run build` - build in dist folder
-
 `npm run electron` - build an electron app
     
 ### Technologies
@@ -17,7 +13,7 @@ Pre-alpha build.
 * WebTorrent API
 * MaterialUI API
 * IndexedDB and it's enhanced versions
-* Drag-Drop API
+* Drag-Drop API *(currently unavaliliable)*
 
 * Electron(only in dev mode)
 
@@ -25,8 +21,7 @@ Pre-alpha build.
 
 * User can upload/download/delete torrents and observe their current status(speed, seeds, size)
 * User can see and change an amount of dedicated disk space for the torrents
-* All the information is stored in advanced version IndexDB(with no localStorage space restrictions etc.).
-It is achieved through separate table, which stores meta-information.
+* All the information is stored in user's disk storage.
 * All the downloads/uploads are sustainable to page reloads
 
 * Electron-app support (currently only in dev mode)
