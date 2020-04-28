@@ -26,8 +26,7 @@ module.exports = {
 
             if (metaInfo.length >= freeMemory) {
               torrent.destroy();
-              event.reply('error-message', ['not enough free memory, using RAM', 'warning']);
-              client.add(torrentLink);
+              event.reply('error-message', ['not enough free memory', 'warning']);
             } else {
               event.reply('add-torrent', [metaInfo, fileName.filePaths[0]]);
               event.reply('calculate-memory');
@@ -55,6 +54,7 @@ module.exports = {
         length: el.length,
         infoHash: el.infoHash,
         path: el.path,
+        magnet: el.magnetURI,
       }));
       event.reply('get-info', arr);
     });

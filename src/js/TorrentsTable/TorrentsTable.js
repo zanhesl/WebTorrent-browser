@@ -9,6 +9,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
+import Link from '@material-ui/core/Link';
 
 import { connect } from 'react-redux';
 
@@ -33,8 +34,9 @@ function TorrentsTable(props) {
       ipcRenderer.send('get-info');
       ipcRenderer.once('get-info', (evt, arg) => {
         setTorrentsArr(arg);
-        props.onNewTorrents(torrentsArr);
-        const currentMemory = props.torrents.filter(el => el.path).reduce((sum, elem) => sum + elem.length, 0);
+        const currentMemory = arg
+          .filter(el => el.path.indexOf('tmp') === -1)
+          .reduce((sum, elem) => sum + elem.length, 0);
         props.updateFreeMem(currentMemory);
       });
     }, REFRESH_RATE);
@@ -59,6 +61,9 @@ function TorrentsTable(props) {
               </TableCell>
               <TableCell className="short-cell" align="center">
                 Size
+              </TableCell>
+              <TableCell className="short-cell" align="center">
+                Magnet
               </TableCell>
             </TableRow>
           </TableHead>
@@ -94,6 +99,11 @@ function TorrentsTable(props) {
                     <div className="icon-wrapper" onClick={() => destroyTorrent(torrent.infoHash)}>
                       <DeleteOutlineIcon />
                     </div>
+                  </TableCell>
+                  <TableCell className="magnet-cell" align="center">
+                    <Link href={torrent.magnet} onClick={() => console.log(torrent.magnet)}>
+                      Link to magnet
+                    </Link>
                   </TableCell>
                 </TableRow>
               ))}
