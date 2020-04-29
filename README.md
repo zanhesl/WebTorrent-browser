@@ -23,7 +23,7 @@ Pre-alpha build.
 * User can see and change an amount of dedicated disk space for the torrents
 * All the information is stored in user's disk storage.
 * All the downloads/uploads are sustainable to page reloads
-* User can watch torrents in stream mode
+* User can watch torrents in stream mode: *'.mp4', '.mp3', '.webm', '.m4v', '.m4a', '.wav'*
 
 * Electron-app support (currently only in dev mode)
 
