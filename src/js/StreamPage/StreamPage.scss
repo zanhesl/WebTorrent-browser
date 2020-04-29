@@ -1,0 +1,29 @@
+@import '../../scss/main.scss';
+
+.stream-page {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    align-items: center;
+}
+
+.add-stream {
+    display: flex;
+    justify-content: center;
+    margin-bottom: $main-spacing;
+    padding: $main-spacing;
+}
+
+.torrent-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.torrent-paper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: $main-spacing;
+}

@@ -12,7 +12,6 @@ import Typography from '@material-ui/core/Typography';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 
-import { Link } from 'react-router-dom';
 import prettyBytes from '../torrentHandler/prettyBytes';
 
 import './MemoryCell.scss';
@@ -22,19 +21,6 @@ const MEGA_MULTIPLIER = 1000 ** 2;
 function TorrentCell(props) {
   const [memory, setMemory] = useState(+prettyBytes(props.dedicatedMemory).split(' ')[0]);
   const [open, setOpen] = useState(false);
-
-  // const calculateFree = () => {
-  //   const currentMemory = props.torrents.filter(el => el.path).reduce((sum, elem) => sum + elem.length, 0);
-  //   props.updateFreeMem(currentMemory);
-  // };
-
-  // useEffect(() => {
-  //   ipcRenderer.on('calculate-memory', () => {
-  //     console.log('changed!');
-
-  //     calculateFree();
-  //   });
-  // }, []);
 
   const handleMemoryChange = event => {
     setMemory(event.target.value);
@@ -47,7 +33,6 @@ function TorrentCell(props) {
     }
     localStorage.setItem('memory', memoryStorage * MEGA_MULTIPLIER);
     props.onChangeMemory(+memoryStorage * MEGA_MULTIPLIER);
-    // calculateFree();
   };
 
   const handleClose = (event, reason) => {
@@ -90,7 +75,6 @@ function TorrentCell(props) {
           </form>
         </div>
       </Paper>
-      <Link to="/app">Home</Link>
     </div>
   );
 }
