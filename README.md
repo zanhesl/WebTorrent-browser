@@ -23,6 +23,7 @@ Pre-alpha build.
 * User can see and change an amount of dedicated disk space for the torrents
 * All the information is stored in user's disk storage.
 * All the downloads/uploads are sustainable to page reloads
+* User can watch torrents in stream mode
 
 * Electron-app support (currently only in dev mode)
 
