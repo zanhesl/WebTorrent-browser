@@ -65,7 +65,7 @@ function AddTorrent(props) {
     <Paper className="paper-container">
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
         <MuiAlert elevation={6} variant="filled" onClose={handleClose} severity={errorType}>
-          Error:{error}
+          {errorType}: {error}
         </MuiAlert>
       </Snackbar>
       <div className="add-torrent">

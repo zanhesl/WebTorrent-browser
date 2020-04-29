@@ -84,6 +84,10 @@ function createWindow() {
     // when you should delete the corresponding element.
     mainWindow = null;
   });
+
+  process.on('uncaughtException', function(error) {
+    mainWindow.webContents.send('error-message', [`${error}`, 'warning']);
+  });
 }
 
 // This method will be called when Electron has finished

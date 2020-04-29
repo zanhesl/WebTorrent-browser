@@ -30,12 +30,17 @@ function TorrentsTable(props) {
   const [torrentsArr, setTorrentsArr] = useState([]);
 
   useEffect(() => {
-    setInterval(() => {
+    const interval = setInterval(() => {
+      console.log('tick');
+
       ipcRenderer.send('get-info');
       ipcRenderer.once('get-info', (evt, arg) => {
         setTorrentsArr([...arg, ...getTorrentsList()]);
       });
     }, REFRESH_RATE);
+    return () => {
+      clearInterval(interval);
+    };
   }, []);
 
   useEffect(() => {

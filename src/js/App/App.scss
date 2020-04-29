@@ -18,6 +18,7 @@ body {
     flex-direction: row;
     align-items: top;
     justify-content: space-between;
+    margin-top: $main-spacing;
 }
 
 .add-torrent-wrapper {
@@ -30,4 +31,29 @@ body {
     width: 100px;
     margin-bottom: 30px;
     margin-top: 30px;
+}
+
+.main-app__info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.MuiButton-outlined {
+    border-color: $main-red !important;
+}
+
+.stream-button {
+    color: $main-red;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    text-align: center;
+    border: 1px solid $main-red;
+    border-radius: 2px;
+    padding: $main-spacing/2;
+}
+
+.stream-button__caption {
+    padding-left: $main-spacing/2;
 }

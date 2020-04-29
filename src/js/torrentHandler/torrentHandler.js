@@ -1,7 +1,7 @@
 import Webtorrent from 'webtorrent';
 // import Idb from 'indexeddb-chunk-store';
 import Idbkv from 'idb-kv-store';
-
+import fileTypes from './fileTypes';
 // const parsetorrent = require('parse-torrent');
 
 const client = new Webtorrent();
@@ -74,4 +74,27 @@ export function getTorrentsList() {
     magnet: el.magnetURI,
   }));
   return arr;
+}
+
+export function streamTorrent(magnet, id) {
+  client.add(magnet, torrent => {
+    // Torrents can contain many files. Let's use the .mp4 file
+    const files = torrent.files.filter(elem => {
+      let isStreamable = false;
+      fileTypes.map(type => {
+        if (elem.name.endsWith(type)) isStreamable = true;
+        return true;
+      });
+      return isStreamable;
+    });
+    torrent.on('done', () => console.log('finished!'));
+
+    // setInterval(() => {
+    //   console.log(file.progress);
+    // }, 500);
+
+    // Display the file by adding it to the DOM.
+    // Supports video, audio, image files, and more!
+    files.map(file => file.appendTo(id));
+  });
 }
