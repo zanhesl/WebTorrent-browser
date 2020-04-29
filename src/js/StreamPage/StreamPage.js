@@ -5,6 +5,8 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { Paper } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
+import { Link } from 'react-router-dom';
+import HomeIcon from '@material-ui/icons/Home';
 
 import './StreamPage.scss';
 import { streamTorrent } from '../torrentHandler/torrentHandler';
@@ -28,6 +30,9 @@ function StreamPage() {
   return (
     <div className="stream-page">
       <img className="main-logo" src="assets/img/WebTorrent.png" alt="Webtorrent" />
+      <Link to="/" className="stream-button">
+        <HomeIcon />
+      </Link>
       <Paper className="add-stream">
         <Button variant="contained" color="primary" onClick={() => handleDownload(link)}>
           Stream
