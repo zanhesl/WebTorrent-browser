@@ -12,6 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 
+import { Link } from 'react-router-dom';
 import prettyBytes from '../torrentHandler/prettyBytes';
 
 import './MemoryCell.scss';
@@ -89,6 +90,7 @@ function TorrentCell(props) {
           </form>
         </div>
       </Paper>
+      <Link to="/app">Home</Link>
     </div>
   );
 }

@@ -5,13 +5,13 @@ import logger from 'redux-logger';
 import { Provider } from 'react-redux';
 import rootReducer from './redux/rootReducer';
 
-import App from './App';
+import Router from './Router';
 
 const store = createStore(rootReducer, applyMiddleware(logger));
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <Router />
   </Provider>,
   document.getElementById('root'),
 );
