@@ -59,7 +59,7 @@
     "jest": "^24.9.0",
     "jest-cli": "^24.9.0",
     "mini-css-extract-plugin": "^0.5.0",
-    "node-sass": "^4.13.1",
+    "node-sass": "^7.0.0",
     "path": "^0.12.7",
     "postcss-loader": "^3.0.0",
     "prettier": "^1.19.1",
